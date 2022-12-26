@@ -12,6 +12,7 @@ import plotly.express as px;
 
 # import function any file .py
 from func_acq_data import *;
+from func_plot import *;
 
 # set config ui-dasboard streamlit
 st.set_page_config(
@@ -30,58 +31,25 @@ st.set_page_config(
 # data acquisition ---------------------------------------------------------------------- #
 # --------------------------------------------------------------------------------------- #
 # load dataset
-dataset = pd.read_csv("dataset/fire_archive_M-C61_317736.csv");
+dataset = df_country();
 
-
+# # container-sidebar
+# with st.sidebar:
+#     st.header("My Dashboard");
+#     st.selectbox("Select page", options=["data visualization", "hotspot prediction"]);
+    
 # container-header
 with st.container():
     st.markdown("## Prediction hotspot with enso and rainfall factor used LSTM-RNN and GRU-RNN");
-    st.write("The impact of enso on increasing the number of hotspots");
 
-
-# container-summary of impact enso to hotspot
-with st.container():
-    
-    # define col-4 row-1
-    col1, col2, col3, col4 = st.columns(4);
-    
-    # col year 2006
-    col1.metric(
-        label="Year 2006",
-        value="154,985 point", 
-        delta="0,00%"
-    );
-    
-    # col year 2009
-    col2.metric(
-        label="Year 2009",
-        value="102344 point", 
-        delta="0,00%"
-    );
-    
-    # col year 2015
-    col3.metric(
-        label="Year 2015",
-        value="178,578 point", 
-        delta="0,00%"
-    );
-    
-    # col year 2019
-    col4.metric(
-        label="Year 2019",
-        value="90,475 point", 
-        delta="0,00%"
-    );
-
-
-# container-hotspot-indonesia
+# container-karhutla-indonesia
 with st.container():
     
     # call dataset karhutla indonesia
     df_karhutla = func_karhutla();
     
     # set sub-header
-    st.write("Data visualization hotspot indonesia");
+    st.subheader("Data visualization karhutla indonesia");
     
     # define columns with col-2 row-1
     col1, col2 = st.columns(2);
@@ -117,12 +85,45 @@ with st.container():
             use_container_width=True
         );
 
-
-# container-hotspot-indonesia with eda
+# container-summary hotspot
 with st.container():
     
     # set sub-header
-    st.write("Data visualization hotspot indonesia");
+    st.subheader("Data visualization hotspot indonesia");
+    
+    # define col-4 row-1
+    col1, col2, col3, col4 = st.columns(4);
+    
+    # col year 2006
+    col1.metric(
+        label="Year 2006",
+        value="154,985 point", 
+        delta="0,00%"
+    );
+    
+    # col year 2009
+    col2.metric(
+        label="Year 2009",
+        value="102344 point", 
+        delta="0,00%"
+    );
+    
+    # col year 2015
+    col3.metric(
+        label="Year 2015",
+        value="178,578 point", 
+        delta="0,00%"
+    );
+    
+    # col year 2019
+    col4.metric(
+        label="Year 2019",
+        value="90,475 point", 
+        delta="0,00%"
+    );
+
+# container-hotspot-indonesia with eda
+with st.container():
     
     # set tab-index
     tab1, tab2 = st.tabs(["with line-plot", "with bar-plot"]);
@@ -161,6 +162,102 @@ with st.container():
             ),
             use_container_width=True
         );
+
+# container-hotspot-south-sumatra with eda
+with st.container():
+
+    # call dataset hotspot province
+    df_hospot = df_province();
     
+    # set sub-header
+    st.subheader("Data visualization hotspot south sumatra");
+    st.write("hotspot south sumatra with enso and rainfall factor");
     
+    # define col-5 row-1
+    col1, col2, col3, col4, col5 = st.columns(5);
     
+    # col year 2016
+    col1.metric(
+        label="Year 2016",
+        value="999 point", 
+        delta="0,00%"
+    );
+    
+    # col year 2017
+    col2.metric(
+        label="Year 2017",
+        value="999 point", 
+        delta="0,00%"
+    );
+    
+    # col year 2018
+    col3.metric(
+        label="Year 2018",
+        value="999 point", 
+        delta="0,00%"
+    );
+    
+    # col year 2019
+    col4.metric(
+        label="Year 2019",
+        value="999 point", 
+        delta="0,00%"
+    );
+    
+    # col year 2020
+    col5.metric(
+        label="Year 2020",
+        value="999 point", 
+        delta="0,00%"
+    );
+    
+    # set tab-index
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["with line-plot", "with bar-plot", "sst nina 3.4", "soi index", "oni index", "rainfall"]);
+    
+    # tab-index-1 hotspot 
+    with tab1:    
+        # plot line hotspot sumsel
+        st.plotly_chart(
+            plot_line(df_hospot, "date", "hotspot", "#3457D5"), use_container_width=True
+        );
+    
+    # tab-index-2 hotspot
+    with tab2:
+        # plot bar hotspot sumsel
+        st.plotly_chart(
+            plot_bar(df_hospot, "date", "hotspot", "#3457D5"), use_container_width=True
+        );
+    
+    # tab-index-3 sst nina 3.4
+    with tab3:    
+        # plot line sst nina 3.4
+        st.plotly_chart(
+            plot_line(df_hospot, "date", "sst", "#3457D5"), use_container_width=True
+        );
+    
+    # tab-index-4 soi index
+    with tab4:    
+        # plot line soi index
+        st.plotly_chart(
+            plot_line(df_hospot, "date", "soi", "#3457D5"), use_container_width=True
+        );
+    
+    # tab-index-5 oni index
+    with tab5:    
+        # plot line oni index
+        st.plotly_chart(
+            plot_line(df_hospot, "date", "oni", "#3457D5"), use_container_width=True
+        );
+    
+    # tab-index-6 rainfall
+    with tab6:    
+        # plot line rainfall
+        st.plotly_chart(
+            plot_line(df_hospot, "date", "rainfall", "#3457D5"), use_container_width=True
+        );
+    
+
+
+
+
+

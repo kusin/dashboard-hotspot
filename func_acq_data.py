@@ -1,26 +1,30 @@
-import pandas as pd;
-import numpy as np;
+# library ui-dashboard
 import streamlit as st;
+
+# library manipulation dataset
+import pandas as pd;
+
+# library manipulation array
+import numpy as np;
+
+# library data visualization
+import plotly.express as px;
 
 
 # func load dataset Indonesia country
 @st.cache(allow_output_mutation=True)
-def df_country(dataset):
-    
-    # statment
+def df_country():
     
     # return value
-    return dataset;
+    return pd.read_csv("dataset/fire_archive_M-C61_317736.csv");
 
 
 # func load dataset province South Sumatra
 @st.cache(allow_output_mutation=True)
-def df_province(dataset):
-    
-    # statment
+def df_province():
     
     # return value
-    return dataset;
+    return pd.read_excel("dataset/dataset.xlsx", sheet_name="dataset", engine="openpyxl");
 
 
 # func aggregate dataset hotspot
