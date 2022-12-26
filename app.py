@@ -31,3 +31,9 @@ st.set_page_config(
 st.markdown("## Prediction hotspot with enso and rainfall factor used LSTM-RNN");
 st.markdown("- reference dataset from https://firms.modaps.eosdis.nasa.gov/download/");
 
+st.metric(
+    label="Percentage recovery",
+    value="{:.2f}".format((dataset["daily_recovery"].sum() / dataset["daily_positive"].sum())*100)+"%", 
+    delta="0,35%"
+);
+
