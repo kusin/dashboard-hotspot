@@ -56,23 +56,14 @@ with st.container():
     
     # columns col-1
     with col1:
-        
         # with pie-plot
         st.plotly_chart(
-            px.pie(
-                df_karhutla, 
-                values="area", 
-                names="year", 
-                color="year",
-                hole=0.5,
-                color_discrete_sequence=["#9FC9C9", "#B4DBD4", "#F2F2C2", "#EEE8AE", "#F7D05E", "#9FC9C9"]
-            ),
+            plot_pie(df_karhutla, "area", "year", 0.5, ["#9FC9C9", "#B4DBD4", "#F2F2C2", "#EEE8AE", "#F7D05E", "#9FC9C9"]),
             use_container_width=True
         );
     
     # columns col-2
     with col2:
-        
         # with bar-plot
         st.plotly_chart(
             px.bar(

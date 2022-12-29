@@ -23,6 +23,22 @@ def plot_line(data, value_x, value_y, nm_color):
     
     # return value
     return fig;
+            
+# func plot  pie with plotly graph objects
+def plot_pie(data, nm_values, nm_names, nm_hole, nm_colors):
+    
+    # show plot
+    fig = go.Figure(
+        data = [
+            go.Pie(values=data[nm_values], labels=data[nm_names], hole=nm_hole)
+        ]
+    );
+    
+    # update custom
+    fig.update_traces(marker=dict(colors=nm_colors));
+    
+    # return value
+    return fig;
 
 # func plot bar with plotly graph objects
 def plot_bar(data, value_x, value_y, nm_color):
