@@ -33,7 +33,7 @@ st.set_page_config(
 # load dataset
 dataset = df_country();
 
-# # container-sidebar
+# container-sidebar
 # with st.sidebar:
 #     st.header("My Dashboard");
 #     st.selectbox("Select page", options=["data visualization", "hotspot prediction"]);
@@ -45,12 +45,15 @@ with st.container():
 # container-karhutla-indonesia
 with st.container():
     
+    # set sub-header
+    st.subheader("Data visualization karhutla indonesia 2014 - 2022");
+    
+    # df_karhutla = pd.read_excel("D:/dataset/luas-karhutla-provinsi-2018-2022.xlsx");
+    # st.dataframe(df_karhutla, use_container_width=True);
+
     # call dataset karhutla indonesia
     df_karhutla = func_karhutla();
-    
-    # set sub-header
-    st.subheader("Data visualization karhutla indonesia");
-    
+
     # define columns with col-2 row-1
     col1, col2 = st.columns(2);
     
