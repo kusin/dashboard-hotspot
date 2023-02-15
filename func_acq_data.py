@@ -16,7 +16,7 @@ import plotly.express as px;
 def df_country():
     
     # return value
-    return pd.read_csv("dataset/fire_archive_M-C61_317736.csv");
+    return pd.read_csv("D:/dataset/fire_archive_2001_2020.csv");
 
 
 # func load dataset province South Sumatra
