@@ -12,15 +12,15 @@ import plotly.express as px;
 
 
 # func load dataset Indonesia country
-@st.cache(allow_output_mutation=True)
+# @st.cache(allow_output_mutation=True)
 def df_country():
     
     # return value
-    return pd.read_csv("D:/dataset/fire_archive_2001_2020.csv");
+    return pd.read_csv("D:/dataset/modis_indonesia_2020_2020.csv");
 
 
 # func load dataset province South Sumatra
-@st.cache(allow_output_mutation=True)
+# @st.cache(allow_output_mutation=True)
 def df_province():
     
     # return value
@@ -28,7 +28,7 @@ def df_province():
 
 
 # func aggregate dataset hotspot
-@st.cache(allow_output_mutation=True)
+# @st.cache(allow_output_mutation=True)
 def func_agg(data, nm_group="", nm_index="", nm_agg=""):
     
     # groupby data by columns and count each rows
