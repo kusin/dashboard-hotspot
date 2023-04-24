@@ -68,7 +68,8 @@ if __name__ == "__main__":
             col5.metric(
                 label="Year 2016", value="999 point", delta="0.00%"  
             );
-            st.dataframe(df);
+        
+            st.dataframe(df, use_container_width=True);
 
         # container-eda
         with st.container():
