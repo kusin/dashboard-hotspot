@@ -1,11 +1,12 @@
 # import library streamlit
 import streamlit as st;
-from streamlit_extras import add_vertical_space as avs
+from streamlit_extras import add_vertical_space as avs;
 
 # import library manipulation dataset
 import pandas as pd;
 import numpy as np;
-from sklearn.preprocessing import MinMaxScaler
+from bokeh.plotting import figure
+from bokeh.io import output_file, show
 
 # import method from other files
 from class_dataset import *;
@@ -100,25 +101,3 @@ if __name__ == "__main__":
             
             # label eda
             st.info("2. Data Pre-processing");
-
-            # memilih area studi
-            df_sumsel = df[["hotspot"]];
-
-            # ensure all data is float
-            df_sumsel = df_sumsel.values;
-            df_sumsel = df_sumsel.astype('float64');
-
-            # normalize features
-            scaler = MinMaxScaler(feature_range=(-1,1));
-            df_sumsel = scaler.fit_transform(df_sumsel);
-
-            df_sumsel = pd.DataFrame(df_sumsel, columns=["A"])
-
-            st.plotly_chart(
-                Visualization.time_series(
-                    df["date"],
-                    df_sumsel["A"],
-                    "Index SOI",
-                    "#70C4A5"
-                ), use_container_width=True
-            );
