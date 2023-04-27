@@ -20,7 +20,7 @@ class Visualization:
         # add plot time series
         fig.add_trace(
             go.Scatter(
-                x=dataX, y=dataY, mode='lines', line_color=color,
+                x=dataX, y=dataY, mode='lines', line_color=color, line_width=3
             )
         );
 

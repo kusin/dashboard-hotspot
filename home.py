@@ -77,13 +77,29 @@ if __name__ == "__main__":
             
             st.info("2. Exploratory Data Analysis");
             
-            col1, col2= st.columns(2);
+            col1, col2= st.columns(2, gap="large");
+            col1.plotly_chart(
+                Visualization.time_series(
+                    df["date"],
+                    df["hotspot"],
+                    "Hotspot Sumatera Selatan years 2001 - 2020",
+                    "#70C4A5"
+                ), use_container_width=True
+            );
+            col2.plotly_chart(
+                Visualization.time_series(
+                    df["date"],
+                    df["rainfall"],
+                    "Rainfall Sumatera Selatan years 2001 - 2020",
+                    "#70C4A5"
+                ), use_container_width=True
+            );
             col1.plotly_chart(
                 Visualization.time_series(
                     df["date"],
                     df["sst"],
                     "SST Nina 3.4",
-                    "blue"
+                    "#70C4A5"
                 ), use_container_width=True
             );
             col2.plotly_chart(
@@ -91,22 +107,6 @@ if __name__ == "__main__":
                     df["date"],
                     df["soi"],
                     "Index SOI",
-                    "blue"
-                ), use_container_width=True
-            );
-            col1.plotly_chart(
-                Visualization.time_series(
-                    df["date"],
-                    df["oni"],
-                    "Index ONI",
-                    "blue"
-                ), use_container_width=True
-            );
-            col2.plotly_chart(
-                Visualization.time_series(
-                    df["date"],
-                    df["rainfall"],
-                    "Rainfall on Sumsel",
-                    "blue"
+                    "#70C4A5"
                 ), use_container_width=True
             );
