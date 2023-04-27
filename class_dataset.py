@@ -3,7 +3,7 @@ import streamlit as st;
 import pandas as pd;
 import numpy as np;
 
-# main class
+# define class dataset
 class Dataset:
 
     @st.cache_data

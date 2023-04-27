@@ -5,17 +5,16 @@ from streamlit_extras import add_vertical_space as avs
 # import library manipulation dataset
 import pandas as pd;
 import numpy as np;
+from sklearn.preprocessing import MinMaxScaler
 
 # import method from other files
 from class_dataset import *;
 from class_visualization import *;
 
-
 # --------------------------------------------------------------- #
 # -- Main Function ---------------------------------------------- #
 # --------------------------------------------------------------- #
 if __name__ == "__main__":
-
     
     # --------------------------------------------------------------- #
     # -- setting configuration -------------------------------------- #
@@ -45,38 +44,23 @@ if __name__ == "__main__":
             st.markdown("<h1 style='color:#9AC66C; text-align:center;'>Hotspot predictions with algorithm LSTM-RNN</h1>",unsafe_allow_html=True);
             avs.add_vertical_space(4);
 
+
         # container-data-acquisition
         with st.container():
+
+            # label data-acquisition
             st.info("1. Data Acquisition");
-        
-        # container-data-acquisition
-        with st.container():
-            
-            # define columns with col-5 row-1
-            col1, col2, col3, col4, col5 = st.columns(5);
-            col1.metric(
-                label="Year 2020", value="999 point", delta="0.00%"  
-            );
-            col2.metric(
-                label="Year 2019", value="999 point", delta="0.00%"  
-            );
-            col3.metric(
-                label="Year 2018", value="999 point", delta="0.00%"  
-            );
-            col4.metric(
-                label="Year 2017", value="999 point", delta="0.00%"  
-            );
-            col5.metric(
-                label="Year 2016", value="999 point", delta="0.00%"  
-            );
-        
+
+            # dataset hostpot
             st.dataframe(df, use_container_width=True);
+
 
         # container-eda
         with st.container():
             
+            # label eda
             st.info("2. Exploratory Data Analysis");
-            
+
             col1, col2= st.columns(2, gap="large");
             col1.plotly_chart(
                 Visualization.time_series(
@@ -106,6 +90,34 @@ if __name__ == "__main__":
                 Visualization.time_series(
                     df["date"],
                     df["soi"],
+                    "Index SOI",
+                    "#70C4A5"
+                ), use_container_width=True
+            );
+
+        # container-pre-processing
+        with st.container():
+            
+            # label eda
+            st.info("2. Data Pre-processing");
+
+            # memilih area studi
+            df_sumsel = df[["hotspot"]];
+
+            # ensure all data is float
+            df_sumsel = df_sumsel.values;
+            df_sumsel = df_sumsel.astype('float64');
+
+            # normalize features
+            scaler = MinMaxScaler(feature_range=(-1,1));
+            df_sumsel = scaler.fit_transform(df_sumsel);
+
+            df_sumsel = pd.DataFrame(df_sumsel, columns=["A"])
+
+            st.plotly_chart(
+                Visualization.time_series(
+                    df["date"],
+                    df_sumsel["A"],
                     "Index SOI",
                     "#70C4A5"
                 ), use_container_width=True
