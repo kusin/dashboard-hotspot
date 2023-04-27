@@ -8,6 +8,7 @@ import numpy as np;
 
 # import method from other files
 from class_dataset import *;
+from class_visualization import *;
 
 
 # --------------------------------------------------------------- #
@@ -51,7 +52,7 @@ if __name__ == "__main__":
         # container-data-acquisition
         with st.container():
             
-            # define columns with col-4 row-1
+            # define columns with col-5 row-1
             col1, col2, col3, col4, col5 = st.columns(5);
             col1.metric(
                 label="Year 2020", value="999 point", delta="0.00%"  
@@ -73,5 +74,39 @@ if __name__ == "__main__":
 
         # container-eda
         with st.container():
+            
             st.info("2. Exploratory Data Analysis");
-
+            
+            col1, col2= st.columns(2);
+            col1.plotly_chart(
+                Visualization.time_series(
+                    df["date"],
+                    df["sst"],
+                    "SST Nina 3.4",
+                    "blue"
+                ), use_container_width=True
+            );
+            col2.plotly_chart(
+                Visualization.time_series(
+                    df["date"],
+                    df["soi"],
+                    "Index SOI",
+                    "blue"
+                ), use_container_width=True
+            );
+            col1.plotly_chart(
+                Visualization.time_series(
+                    df["date"],
+                    df["oni"],
+                    "Index ONI",
+                    "blue"
+                ), use_container_width=True
+            );
+            col2.plotly_chart(
+                Visualization.time_series(
+                    df["date"],
+                    df["rainfall"],
+                    "Rainfall on Sumsel",
+                    "blue"
+                ), use_container_width=True
+            );
