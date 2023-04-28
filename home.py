@@ -9,7 +9,7 @@ import numpy as np;
 # import method from other files
 from class_dataset import *;
 from class_visualization import *;
-from statsmodels.tsa.stattools import adfuller
+from arch.unitroot import ADF;
 
 # --------------------------------------------------------------- #
 # -- Main Function ---------------------------------------------- #
@@ -98,4 +98,3 @@ if __name__ == "__main__":
             
             # label eda
             st.info("3. Data Pre-processing");
-            st.write(adfuller(df["hotspot"]));
