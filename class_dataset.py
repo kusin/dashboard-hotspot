@@ -10,7 +10,7 @@ class Dataset:
     def load_data():
 
         # load dataset
-        df = pd.read_csv("dataset/dataset.csv");
+        df = pd.read_csv("dataset/dataset.csv", parse_dates=["date"]);
 
         # return values
         return df;

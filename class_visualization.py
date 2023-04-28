@@ -3,7 +3,8 @@ import pandas as pd;
 import numpy as np;
 import plotly.express as px;
 import plotly.graph_objects as go;
-
+from matplotlib import pyplot
+from matplotlib import pyplot as plt
 
 # define class visualization
 class Visualization:
