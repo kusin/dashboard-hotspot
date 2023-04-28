@@ -3,8 +3,9 @@ import pandas as pd;
 import numpy as np;
 import plotly.express as px;
 import plotly.graph_objects as go;
-from matplotlib import pyplot
 from matplotlib import pyplot as plt
+from statsmodels.graphics.tsaplots import plot_pacf
+from statsmodels.graphics.tsaplots import plot_acf
 
 # define class visualization
 class Visualization:
@@ -13,20 +14,17 @@ class Visualization:
     x = "";
     y = "";
 
-    def time_series(dataX, dataY, title, color):
+    def time_series(dataX, dataY, color, label):
         
         # define a new figure
-        fig = go.Figure();
+        fig = plt.figure(figsize=(20,6));
 
-        # add plot time series
-        fig.add_trace(
-            go.Scatter(
-                x=dataX, y=dataY, mode='lines', line_color=color, line_width=3
-            )
-        );
+        # make a time series plot
+        plt.plot(dataX, dataY, color=color, label=label, linewidth=2);
 
-        # update plot
-        fig.update_layout(title_text=title);
+        # make are labels
+        plt.legend(loc="best");
+        plt.grid(True);
 
         # return values
         return fig;

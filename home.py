@@ -10,6 +10,7 @@ import numpy as np;
 from class_dataset import *;
 from class_visualization import *;
 
+
 # --------------------------------------------------------------- #
 # -- Main Function ---------------------------------------------- #
 # --------------------------------------------------------------- #
@@ -60,43 +61,40 @@ if __name__ == "__main__":
             # label eda
             st.info("2. Exploratory Data Analysis");
             
-            col1, col2= st.columns(2, gap="large");
-            col1.plotly_chart(
+            # data visualization
+            tab1, tab2, tab3, tab4 = st.tabs(["Hotspot Sumsel", "Rainfall", "SST Nina 3.4", "Index SOI"]);
+            tab1.pyplot(
                 Visualization.time_series(
-                    df["date"],
-                    df["hotspot"],
-                    "Hotspot Sumatera Selatan years 2001 - 2020",
-                    "#70C4A5"
+                    df["date"], df["hotspot"], "blue",
+                    "Hotspot Sumsel years 2001 - 2020"
                 ), use_container_width=True
             );
-            col2.plotly_chart(
+            tab2.pyplot(
                 Visualization.time_series(
-                    df["date"],
-                    df["rainfall"],
-                    "Rainfall Sumatera Selatan years 2001 - 2020",
-                    "#70C4A5"
+                    df["date"], df["rainfall"], "blue",
+                    "Rainfall Sumsel years 2001 - 2020"
                 ), use_container_width=True
             );
-            col1.plotly_chart(
+            tab3.pyplot(
                 Visualization.time_series(
-                    df["date"],
-                    df["sst"],
-                    "SST Nina 3.4",
-                    "#70C4A5"
+                    df["date"], df["sst"], "blue",
+                    "SST Nina 3.4"
                 ), use_container_width=True
             );
-            col2.plotly_chart(
+            tab4.pyplot(
                 Visualization.time_series(
-                    df["date"],
-                    df["soi"],
-                    "Index SOI",
-                    "#70C4A5"
+                    df["date"], df["soi"], "blue",
+                    "Index SOI"
                 ), use_container_width=True
             );
+        
+            # acf and pacf
+            tab1, tab2 = st.tabs(["ACF plot", "PACF plot"]);
+            
 
 
         # container-pre-processing
         with st.container():
             
             # label eda
-            st.info("2. Data Pre-processing");
+            st.info("3. Data Pre-processing");
