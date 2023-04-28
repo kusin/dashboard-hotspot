@@ -5,8 +5,6 @@ from streamlit_extras import add_vertical_space as avs;
 # import library manipulation dataset
 import pandas as pd;
 import numpy as np;
-from bokeh.plotting import figure
-from bokeh.io import output_file, show
 
 # import method from other files
 from class_dataset import *;
@@ -95,6 +93,36 @@ if __name__ == "__main__":
                     "#70C4A5"
                 ), use_container_width=True
             );
+
+            from matplotlib import pyplot
+            from matplotlib import pyplot as plt
+            import statsmodels.api as sm
+            from statsmodels.graphics.tsaplots import plot_pacf
+            from statsmodels.graphics.tsaplots import plot_acf
+        
+            # make frame
+            fig, ax= plt.subplots(nrows=1, ncols=2, facecolor="#F0F0F0", figsize = (20,5))
+
+            # plot acf
+            plot_acf(df["hotspot"], lags=24, ax=ax[0])
+            ax[0].grid(True)
+
+            # plot pacf
+            plot_pacf(df["hotspot"],lags=24, ax=ax[1], method="yw")
+            ax[1].grid(True)
+
+            # show plot acf and pacf
+            st.pyplot(fig);
+        
+            # make frame
+            time = [1, 2, 3, 4, 5]
+            values = [3, 2, 3, 6, 9]
+            # Create the plot
+            fig = plt.figure(figsize = (20,5))
+            ax = fig.add_subplot(1,1,1)
+            plt.plot(time, values)
+            # Display the plot in the app
+            st.pyplot(fig)
 
         # container-pre-processing
         with st.container():
