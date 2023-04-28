@@ -28,3 +28,17 @@ class Visualization:
 
         # return values
         return fig;
+
+    def acf():
+
+        # define a new figure
+        fig = plt.figure(figsize=(20,6));
+
+        return fig;
+
+    def pacf():
+
+        # define a new figure
+        fig = plt.figure(figsize=(20,6));
+
+        return fig;

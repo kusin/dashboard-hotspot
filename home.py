@@ -9,7 +9,9 @@ import numpy as np;
 # import method from other files
 from class_dataset import *;
 from class_visualization import *;
-from arch.unitroot import ADF;
+from arch.unitroot import ADF
+from arch.unitroot import PhillipsPerron
+from arch.unitroot import KPSS
 
 # --------------------------------------------------------------- #
 # -- Main Function ---------------------------------------------- #
@@ -88,9 +90,22 @@ if __name__ == "__main__":
                 ), use_container_width=True
             );
         
-            # acf and pacf
-            tab1, tab2 = st.tabs(["ACF plot", "PACF plot"]);
-            
+
+            # acf and pacf ploting
+            tab1, tab2 = st.tabs(["Hotspot Sumsel", "Rainfall"]);
+            tab1.pyplot(
+                Visualization.acf()
+            );
+            tab2.pyplot(
+                Visualization.pacf()
+            );
+
+            # stationarity test
+            tab1, tab2, tab3 = st.tabs(["ADF Test", "PP Test", "KPSS Test"]);
+            tab1.text(ADF(df["hotspot"], lags=15));
+            tab2.text(PhillipsPerron(df["hotspot"], lags=15));
+            tab3.text(KPSS(df["hotspot"], lags=15));
+        
 
 
         # container-pre-processing
@@ -98,3 +113,4 @@ if __name__ == "__main__":
             
             # label eda
             st.info("3. Data Pre-processing");
+            
