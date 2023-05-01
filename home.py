@@ -111,7 +111,7 @@ if __name__ == "__main__":
         # container-pre-processing
         with st.container():
             
-            # label eda
+            # label pre-processing
             st.info("3. Data Pre-processing");
 
             # form-normalize
@@ -138,7 +138,14 @@ if __name__ == "__main__":
                     ), use_container_width=True
                 );
 
-                    
+            # set margin 2
+            avs.add_vertical_space(2);
+        
+        # container-supervised-learning
+        with st.container():
+            
+            # label supervised-learning
+            st.info("4. Supervised Learning");
                     
                     
 

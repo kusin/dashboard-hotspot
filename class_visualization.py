@@ -30,7 +30,7 @@ class Visualization:
         # return values
         return fig;
 
-    def time_series2(df, data1, data2, color1, color2, label1, label2):
+    def time_series2(df, data1, color1, label1, data2, color2, label2):
         
         # define a new figure
         fig = plt.figure(figsize=(20,6));
