@@ -29,3 +29,19 @@ class Visualization:
 
         # return values
         return fig;
+
+    def time_series2(df, data1, data2, color1, color2, label1, label2):
+        
+        # define a new figure
+        fig = plt.figure(figsize=(20,6));
+
+        # make a time series plot
+        plt.plot(df.iloc[0:data1.shape[0],0], data1, color=color1, label=label1, linewidth=2);
+        plt.plot(df.iloc[data1.shape[0]:len(df),0], data2, color=color2, label=label2, linewidth=2);
+
+        # make are labels
+        plt.legend(loc="best");
+        plt.grid(True);
+
+        # return values
+        return fig;

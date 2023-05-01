@@ -5,6 +5,7 @@ from streamlit_extras import add_vertical_space as avs;
 # import library manipulation dataset
 import pandas as pd;
 import numpy as np;
+from sklearn.preprocessing import MinMaxScaler
 import statsmodels.api as sm
 from statsmodels.graphics.tsaplots import plot_pacf
 from statsmodels.graphics.tsaplots import plot_acf
@@ -12,6 +13,7 @@ from statsmodels.graphics.tsaplots import plot_acf
 # import method from other files
 from class_dataset import *;
 from class_visualization import *;
+from class_pre_processing import *;
 from arch.unitroot import ADF
 from arch.unitroot import PhillipsPerron
 from arch.unitroot import KPSS
@@ -59,6 +61,9 @@ if __name__ == "__main__":
             # dataset hostpot
             st.dataframe(df, use_container_width=True);
 
+            # set margin 2
+            avs.add_vertical_space(2);
+        
 
         # container-eda
         with st.container():
@@ -94,11 +99,13 @@ if __name__ == "__main__":
             );
         
             # stationarity test
-            col1, col2, col3= st.columns(3);
+            col1, col2, col3= st.columns(3, gap="medium");
             col1.text(ADF(df["hotspot"], lags=15));
             col2.text(PhillipsPerron(df["hotspot"], lags=15));
             col3.text(KPSS(df["hotspot"], lags=15));
-        
+
+            # set margin 2
+            avs.add_vertical_space(2);
 
 
         # container-pre-processing
@@ -106,4 +113,33 @@ if __name__ == "__main__":
             
             # label eda
             st.info("3. Data Pre-processing");
+
+            # form-normalize
+            cb_normalized = st.selectbox("Choose method of normalized", ('--', 'Min-Max'));
+            cb_splitted = st.selectbox("Choose percentage data split", ('--', '80-20'));
+            btn_sumbit = st.button("Sumbit");
+
+            # process-normalized
+            if cb_normalized=="Min-Max":
+                normalized = PreProcessing.normalization(df[["hotspot"]]);
+
+            # process-splitted
+            if cb_splitted=="80-20":
+                train_data, test_data = PreProcessing.splitting(normalized, 0.80, 0.20);
+
+            # ploting normalized and splitting
+            if btn_sumbit:
+                # plot result normalization
+                st.pyplot(
+                    Visualization.time_series2(
+                        df,
+                        train_data, "blue", "data train",
+                        test_data, "red", "data test"
+                    ), use_container_width=True
+                );
+
+                    
+                    
+                    
+
             
