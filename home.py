@@ -5,6 +5,9 @@ from streamlit_extras import add_vertical_space as avs;
 # import library manipulation dataset
 import pandas as pd;
 import numpy as np;
+import statsmodels.api as sm
+from statsmodels.graphics.tsaplots import plot_pacf
+from statsmodels.graphics.tsaplots import plot_acf
 
 # import method from other files
 from class_dataset import *;
@@ -90,21 +93,11 @@ if __name__ == "__main__":
                 ), use_container_width=True
             );
         
-
-            # acf and pacf ploting
-            tab1, tab2 = st.tabs(["Hotspot Sumsel", "Rainfall"]);
-            tab1.pyplot(
-                Visualization.acf()
-            );
-            tab2.pyplot(
-                Visualization.pacf()
-            );
-
             # stationarity test
-            tab1, tab2, tab3 = st.tabs(["ADF Test", "PP Test", "KPSS Test"]);
-            tab1.text(ADF(df["hotspot"], lags=15));
-            tab2.text(PhillipsPerron(df["hotspot"], lags=15));
-            tab3.text(KPSS(df["hotspot"], lags=15));
+            col1, col2, col3= st.columns(3);
+            col1.text(ADF(df["hotspot"], lags=15));
+            col2.text(PhillipsPerron(df["hotspot"], lags=15));
+            col3.text(KPSS(df["hotspot"], lags=15));
         
 
 

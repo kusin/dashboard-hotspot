@@ -4,6 +4,7 @@ import numpy as np;
 import plotly.express as px;
 import plotly.graph_objects as go;
 from matplotlib import pyplot as plt
+import statsmodels.api as sm
 from statsmodels.graphics.tsaplots import plot_pacf
 from statsmodels.graphics.tsaplots import plot_acf
 
@@ -27,18 +28,4 @@ class Visualization:
         plt.grid(True);
 
         # return values
-        return fig;
-
-    def acf():
-
-        # define a new figure
-        fig = plt.figure(figsize=(20,6));
-
-        return fig;
-
-    def pacf():
-
-        # define a new figure
-        fig = plt.figure(figsize=(20,6));
-
         return fig;
