@@ -106,46 +106,6 @@ if __name__ == "__main__":
 
             # set margin 2
             avs.add_vertical_space(2);
-
-
-        # container-pre-processing
-        with st.container():
-            
-            # label pre-processing
-            st.info("3. Data Pre-processing");
-
-            # form-normalize
-            cb_normalized = st.selectbox("Choose method of normalized", ('--', 'Min-Max'));
-            cb_splitted = st.selectbox("Choose percentage data split", ('--', '80-20'));
-            btn_sumbit = st.button("Sumbit");
-
-            # process-normalized
-            if cb_normalized=="Min-Max":
-                normalized = PreProcessing.normalization(df[["hotspot"]]);
-
-            # process-splitted
-            if cb_splitted=="80-20":
-                train_data, test_data = PreProcessing.splitting(normalized, 0.80, 0.20);
-
-            # ploting normalized and splitting
-            if btn_sumbit:
-                # plot result normalization
-                st.pyplot(
-                    Visualization.time_series2(
-                        df,
-                        train_data, "blue", "data train",
-                        test_data, "red", "data test"
-                    ), use_container_width=True
-                );
-
-            # set margin 2
-            avs.add_vertical_space(2);
-        
-        # container-supervised-learning
-        with st.container():
-            
-            # label supervised-learning
-            st.info("4. Supervised Learning");
                     
                     
 
