@@ -72,32 +72,44 @@ if __name__ == "__main__":
             st.info("2. Exploratory Data Analysis");
             
             # data visualization
-            tab1, tab2, tab3, tab4 = st.tabs(["Hotspot Sumsel", "Rainfall", "SST Nina 3.4", "Index SOI"]);
-            tab1.pyplot(
+            col1, col2= st.columns(2, gap="large");
+            col1.plotly_chart(
                 Visualization.time_series(
-                    df["date"], df["hotspot"], "blue",
-                    "Hotspot Sumsel years 2001 - 2020"
-                ), use_container_width=True
+                    dataX=df["date"],
+                    dataY=df["hotspot"],
+                    title="Hotspot Sumsel years 2001 - 2020",
+                    color="blue"
+                ),
+                use_container_width=True
             );
-            tab2.pyplot(
+            col2.plotly_chart(
                 Visualization.time_series(
-                    df["date"], df["rainfall"], "blue",
-                    "Rainfall Sumsel years 2001 - 2020"
-                ), use_container_width=True
+                    dataX=df["date"],
+                    dataY=df["rainfall"],
+                    title="Rainfall Sumsel years 2001 - 2020",
+                    color="blue"
+                ),
+                use_container_width=True
             );
-            tab3.pyplot(
+            col1.plotly_chart(
                 Visualization.time_series(
-                    df["date"], df["sst"], "blue",
-                    "SST Nina 3.4"
-                ), use_container_width=True
+                    dataX=df["date"],
+                    dataY=df["sst"],
+                    title="SST Nina 3.4",
+                    color="blue"
+                ),
+                use_container_width=True
             );
-            tab4.pyplot(
+            col2.plotly_chart(
                 Visualization.time_series(
-                    df["date"], df["soi"], "blue",
-                    "Index SOI"
-                ), use_container_width=True
+                    dataX=df["date"],
+                    dataY=df["soi"],
+                    title="Index SOI",
+                    color="blue"
+                ),
+                use_container_width=True
             );
-        
+
             # stationarity test
             col1, col2, col3= st.columns(3, gap="medium");
             col1.text(ADF(df["hotspot"], lags=15));
@@ -106,7 +118,55 @@ if __name__ == "__main__":
 
             # set margin 2
             avs.add_vertical_space(2);
+        
+        # /. end container-eda
                     
-                    
+        
+        # data preprocessing
+        with st.container():
+            
+            # label data preprocessing
+            st.info("3. Data Preprocessing");
 
+            # 1. feature selection
+            df_sumsel = df.filter(["hotspot"]);
+            df_sumsel = df_sumsel.values;
+
+            # 2. normalized min-max
+            df_sumsel = PreProcessing.normalization(df_sumsel);
+
+            # 3. splitting data
+            train_size, test_size = PreProcessing.splitting(df_sumsel, 0.80, 0.20);
+
+            temp_train = pd.concat([
+                pd.DataFrame(df.iloc[0:len(train_size),0:1], columns=["date"], index=list(range(0,192))),
+                pd.DataFrame(np.array(train_size), columns=["train"], index=list(range(0,192))),
+            ], axis=1);
+
+            temp_test = pd.concat([
+                pd.DataFrame(df.iloc[len(train_size):len(df),0], columns=['date'], index=list(range(192, 240))),
+                pd.DataFrame(np.array(test_size), columns=['test'], index=list(range(192, 240))),
+            ], axis=1);
+            
+            st.plotly_chart(
+                Visualization.splitting(
+                    # train_size
+                    dataX1=temp_train["date"],
+                    dataY1=temp_train["train"],
+
+                    # test_size
+                    dataX2=temp_test["date"],
+                    dataY2=temp_test["test"],
+                    
+                    # other
+                    color1="blue",
+                    color2="red",
+                    title="The result of data preprocessing"
+                ),
+                use_container_width=True
+            ); 
+        
+        # data preprocessing
+        with st.container():
+            
             

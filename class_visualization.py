@@ -15,33 +15,49 @@ class Visualization:
     x = "";
     y = "";
 
-    def time_series(dataX, dataY, color, label):
+    def time_series(dataX, dataY, title, color):
         
         # define a new figure
-        fig = plt.figure(figsize=(20,6));
+        fig = go.Figure();
 
-        # make a time series plot
-        plt.plot(dataX, dataY, color=color, label=label, linewidth=2);
+        # add plot time series
+        fig.add_trace(
+            go.Scatter(
+                x=dataX, y=dataY, mode='lines', line_color=color,
+            )
+        );
 
-        # make are labels
-        plt.legend(loc="best");
-        plt.grid(True);
+        # update plot
+        fig.update_layout({
+            "title": title
+        });
 
         # return values
         return fig;
-
-    def time_series2(df, data1, color1, label1, data2, color2, label2):
+    
+    def splitting(dataX1, dataY1, dataX2, dataY2, color1, color2, title):
         
         # define a new figure
-        fig = plt.figure(figsize=(20,6));
+        fig = go.Figure();
 
-        # make a time series plot
-        plt.plot(df.iloc[0:data1.shape[0],0], data1, color=color1, label=label1, linewidth=2);
-        plt.plot(df.iloc[data1.shape[0]:len(df),0], data2, color=color2, label=label2, linewidth=2);
+        # add plot time series
+        fig.add_trace(
+            go.Scatter(
+                x=dataX1, y=dataY1, mode='lines', line_color=color1, line_width=2.5
+            )
+        );
 
-        # make are labels
-        plt.legend(loc="best");
-        plt.grid(True);
+        fig.add_trace(
+            go.Scatter(
+                x=dataX2, y=dataY2, mode='lines', line_color=color2, line_width=2.5
+            )
+        );
+
+        # update plot
+        fig.update_layout({
+            "title": title,
+            "showlegend": False
+        });
 
         # return values
         return fig;
