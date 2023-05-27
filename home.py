@@ -18,6 +18,66 @@ from arch.unitroot import ADF
 from arch.unitroot import PhillipsPerron
 from arch.unitroot import KPSS
 
+# ------------------
+# library manipulation dataset
+import pandas as pd
+from pandas import concat
+from pandas import DataFrame
+from pandas import read_csv
+from pandas import read_excel
+
+# library manipulation array
+import numpy as np
+from numpy import concatenate
+from numpy import array
+
+# library configuration date and time
+import time
+from datetime import datetime
+
+# library data visualization
+import seaborn as sns
+import matplotlib.dates as mdates
+from matplotlib import pyplot
+from matplotlib import pyplot as plt
+
+# library analysis acf and pacf
+import statsmodels.api as sm
+from statsmodels.graphics.tsaplots import plot_pacf
+from statsmodels.graphics.tsaplots import plot_acf
+
+# library normalize data with max-min algorithm
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import LabelEncoder
+from sklearn.pipeline import Pipeline
+
+# library algorithm lstm-rnn with keras
+import tensorflow as tf
+from tensorflow.keras import models
+from keras.models import Sequential
+from keras.layers import RNN
+from keras.layers import LSTM
+from keras.layers import GRU
+from keras.layers import Dense
+from keras.layers import Dropout
+from keras.layers import TimeDistributed
+from keras.layers import Bidirectional
+from keras.optimizers import Adam, Adamax, RMSprop, SGD
+from keras.layers import LeakyReLU
+
+# Early stoping
+from keras.callbacks import EarlyStopping
+from keras.callbacks import ModelCheckpoint
+
+# library evaluation model
+from math import sqrt
+from sklearn.metrics import make_scorer
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_error
+
+
+
+
 # --------------------------------------------------------------- #
 # -- Main Function ---------------------------------------------- #
 # --------------------------------------------------------------- #
@@ -168,5 +228,29 @@ if __name__ == "__main__":
         
         # data preprocessing
         with st.container():
-            
-            
+            # Design network
+            model = Sequential()
+
+            # First LSTM layer with Dropout regularisation
+            model.add(
+                LSTM(
+                    units=10,
+                    activation="selu",
+                    input_shape=(trainX.shape[1], 1)
+                )
+            )
+            model.add(Dropout(0.20))
+
+            # The output layer
+            model.add(Dense(1))
+
+            # Compiling model the LSTM-RNN
+            model.compile(
+                optimizer='sgd',
+                loss='mae',
+                metrics=[
+                    tf.keras.metrics.MeanAbsoluteError(),
+                    tf.keras.metrics.MeanSquaredError(),
+                    tf.keras.metrics.RootMeanSquaredError()
+                ]
+            )

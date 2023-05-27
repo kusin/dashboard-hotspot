@@ -1,12 +1,6 @@
 # declaration of library
-import pandas as pd;
-import numpy as np;
 import plotly.express as px;
 import plotly.graph_objects as go;
-from matplotlib import pyplot as plt
-import statsmodels.api as sm
-from statsmodels.graphics.tsaplots import plot_pacf
-from statsmodels.graphics.tsaplots import plot_acf
 
 # define class visualization
 class Visualization:
