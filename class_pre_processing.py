@@ -29,3 +29,20 @@ class PreProcessing():
         
         # reteurn values
         return train_data, test_data;
+
+     # method supervised learning
+    def supervised_learning(dataset, look_back=1):
+        
+        # declare variable X and Y
+        dataX = []
+        dataY = []
+        
+        # for loop for create supervised learning
+        for i in range(len(dataset)-look_back):
+            
+            # insert value X and Y 
+            dataX.append(dataset[i:(i+look_back), 0])
+            dataY.append(dataset[i + look_back, 0])
+        
+        # return value X and Y
+        return np.array(dataX), np.array(dataY)

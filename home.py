@@ -2,23 +2,6 @@
 import streamlit as st;
 from streamlit_extras import add_vertical_space as avs;
 
-# import library manipulation dataset
-import pandas as pd;
-import numpy as np;
-from sklearn.preprocessing import MinMaxScaler
-import statsmodels.api as sm
-from statsmodels.graphics.tsaplots import plot_pacf
-from statsmodels.graphics.tsaplots import plot_acf
-
-# import method from other files
-from class_dataset import *;
-from class_visualization import *;
-from class_pre_processing import *;
-from arch.unitroot import ADF
-from arch.unitroot import PhillipsPerron
-from arch.unitroot import KPSS
-
-# ------------------
 # library manipulation dataset
 import pandas as pd
 from pandas import concat
@@ -75,8 +58,13 @@ from sklearn.metrics import make_scorer
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_error
 
-
-
+# import method from other files
+from class_dataset import *;
+from class_visualization import *;
+from class_pre_processing import *;
+from arch.unitroot import ADF
+from arch.unitroot import PhillipsPerron
+from arch.unitroot import KPSS
 
 # --------------------------------------------------------------- #
 # -- Main Function ---------------------------------------------- #
@@ -196,19 +184,56 @@ if __name__ == "__main__":
             df_sumsel = PreProcessing.normalization(df_sumsel);
 
             # 3. splitting data
-            train_size, test_size = PreProcessing.splitting(df_sumsel, 0.80, 0.20);
+            train, test = PreProcessing.splitting(df_sumsel, 0.80, 0.20);
+
+            temp_normalized = pd.concat([
+                pd.DataFrame(
+                    np.array(df["hotspot"]),
+                    columns=["date"]
+                ),
+                pd.DataFrame(
+                    df_sumsel,
+                    columns=["normalized"]
+                ),
+            ], axis=1);
 
             temp_train = pd.concat([
-                pd.DataFrame(df.iloc[0:len(train_size),0:1], columns=["date"], index=list(range(0,192))),
-                pd.DataFrame(np.array(train_size), columns=["train"], index=list(range(0,192))),
+                pd.DataFrame(
+                    df.iloc[0:len(train),0:1],
+                    columns=["date"],
+                    index=list(range(0,192))
+                ),
+                pd.DataFrame(
+                    np.array(train),
+                    columns=["train"], 
+                    index=list(range(0,192))
+                ),
             ], axis=1);
 
             temp_test = pd.concat([
-                pd.DataFrame(df.iloc[len(train_size):len(df),0], columns=['date'], index=list(range(192, 240))),
-                pd.DataFrame(np.array(test_size), columns=['test'], index=list(range(192, 240))),
+                pd.DataFrame(
+                    df.iloc[len(train):len(df),0],
+                    columns=['date'],
+                    index=list(range(192,240))
+                ),
+                pd.DataFrame(
+                    np.array(test),
+                    columns=['test'],
+                    index=list(range(192,240))
+                ),
             ], axis=1);
             
-            st.plotly_chart(
+            col1, col2= st.columns(2, gap="large");
+            col2.plotly_chart(
+                Visualization.time_series(
+                    dataX=temp_normalized["date"],
+                    dataY=temp_normalized["normalized"],
+                    title="Index SOI",
+                    color="blue"
+                ),
+                use_container_width=True
+            );
+            col2.plotly_chart(
                 Visualization.splitting(
                     # train_size
                     dataX1=temp_train["date"],
@@ -224,33 +249,119 @@ if __name__ == "__main__":
                     title="The result of data preprocessing"
                 ),
                 use_container_width=True
-            ); 
+            );
         
-        # data preprocessing
+
+        # data supervised learning
         with st.container():
-            # Design network
-            model = Sequential()
+            
+            # set look back -1
+            look_back = 1
 
-            # First LSTM layer with Dropout regularisation
-            model.add(
-                LSTM(
-                    units=10,
-                    activation="selu",
-                    input_shape=(trainX.shape[1], 1)
-                )
-            )
-            model.add(Dropout(0.20))
+            # set supervised learning for data train
+            trainX, trainY = PreProcessing.supervised_learning(train, look_back)
 
-            # The output layer
-            model.add(Dense(1))
+            # set supervised learning for data test
+            testX, testY = PreProcessing.supervised_learning(test, look_back)
 
-            # Compiling model the LSTM-RNN
-            model.compile(
-                optimizer='sgd',
-                loss='mae',
-                metrics=[
-                    tf.keras.metrics.MeanAbsoluteError(),
-                    tf.keras.metrics.MeanSquaredError(),
-                    tf.keras.metrics.RootMeanSquaredError()
-                ]
-            )
+
+            # reshape data train
+            trainX = np.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
+
+            # reshape data test
+            testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
+
+
+        # # modeling LSTM-RNN
+        with st.container():
+            # label data preprocessing
+            st.info("4. Modeling LSTM-RNN");
+            
+            col1, col2= st.columns(2, gap="large");
+
+            col1.selectbox(
+                "Activation function", 
+                ("tanh", "sigmoid", "relu", "selu", "elu", "softplus")
+            );
+
+            col1.selectbox(
+                "Optimizers", 
+                ("adam", "adamax", "rmsprop", "sgd")
+            );
+
+            col1.selectbox(
+                "Dropout", 
+                (0.00, 0.10, 0.15, 0.20, 0.25)
+            );
+
+            col1.selectbox(
+                "Batch Size", 
+                (4, 8, 16, 32, 64)
+            );
+
+            col1.selectbox(
+                "Epoch", 
+                (2000, 4000)
+            );
+
+            st.button("Button")
+
+            
+
+        #     # label data preprocessing
+        #     st.info("4. Modeling LSTM-RNN");
+
+        #     # Design network
+        #     model = Sequential()
+
+        #     # First LSTM layer with Dropout regularisation
+        #     model.add(
+        #         LSTM(
+        #             units=10,
+        #             activation="selu",
+        #             input_shape=(trainX.shape[1], 1)
+        #         )
+        #     )
+        #     model.add(Dropout(0.20))
+
+        #     # The output layer
+        #     model.add(Dense(1))
+
+        #     # Compiling model the LSTM-RNN
+        #     model.compile(
+        #         optimizer='sgd',
+        #         loss='mae',
+        #         metrics=[
+        #             tf.keras.metrics.MeanAbsoluteError(),
+        #             tf.keras.metrics.MeanSquaredError(),
+        #             tf.keras.metrics.RootMeanSquaredError()
+        #         ]
+        #     )
+
+        #     # fit network
+        #     history = model.fit(
+        #         trainX, trainY, epochs=2000, batch_size=8,
+        #         validation_data=(testX, testY),
+        #         verbose=1, shuffle=False
+        #     )
+
+        #     # 5. make predictions
+        #     predictions = model.predict(testX, verbose=0)
+        #     print(predictions[:, 0])
+
+        #     # generate urutan data sesuai panjang datanya
+        #     x = pd.date_range(start="2017-01-01", periods=len(testY), freq='MS')
+
+        #     # membuat frame
+        #     fig, ax = plt.subplots(figsize = (10,5))
+
+        #     # membuat time series plot
+        #     ax.plot(x, testY, color="tab:blue", label="actual data", linewidth=2.5)
+        #     ax.plot(x, predictions, color="tab:red", label="prediction data", linewidth=2.5)
+
+        #     # membuat label-label
+        #     ax.xaxis.set_major_formatter(mdates.DateFormatter('%b-%Y'))
+        #     ax.legend(loc="best")
+        #     ax.grid(True)
+
+        #     st.pyplot(fig)
